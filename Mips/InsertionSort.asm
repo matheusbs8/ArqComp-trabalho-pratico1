@@ -31,8 +31,21 @@ for_i_loop:
 while_loop:
     # Se j < 0 ou A[j] <= eleito, sair do loop
     # verificar um equivalente
-    bltz $t3, end_while
+    
+    
+    
+    
+    slt $t8, $t3, $zero   # $t1 = 1 se $t0 < 0, senão $t1 = 0
 
+    # Branch condicional se $t1 for igual a 0 (j >= 0)
+    beq $t8, $zero, se_j_maior_ou_igual_0
+
+    # Código a ser executado se j < 0
+    j end_while
+
+    # Label para o caso em que j >= 0
+se_j_maior_ou_igual_0:
+    
     # Carregando o endereço de A[j]
     lw $t6, A_addr
     sll $t8, $t3, 2   # Multiplicando $t3 por 4 (tamanho de um elemento)
