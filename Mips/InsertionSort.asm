@@ -1,43 +1,55 @@
 .data
-A: .word 3, 2, 7, 8, 1, 9, 10, 4, 7  # Array A com espaço para 9 inteiros
-tamanho: .word 9            # Variável tamanho para armazenar o tamanho do array
-A_addr: .word A  # Declara o endereço de A
+A: .word 3, 2, 7, 8, 1, 9, 10, 4, 7
+tamanho: .word 9
 
 .text
-.globl main
 
-main:
-    # Carregando o tamanho do array na variável $t0
-    lw $t0, tamanho
+    # Inicializa $a0 com o endereço de A
+    la $a0, A
 
+    # Inicializa $a1 com o tamanho do vetor
+    lw $a1, tamanho
+
+    # Chama insertionSort
+    jal InsertionSort
+
+    # Saída do programa
+    j exit
+
+# Função InsertionSort
+InsertionSort:
+    # Argumentos: $a0 = endereço do array A, $a1 = tamanho do array
+    #move $s0, $a0       # endereço do array A
+    #move $s1, $a1       # tamanho do array
+ 
+ # Salvando registradores necessários
+    sw $s0, 0($sp)
+    sw $ra, 4($sp)
+
+    # Inicializando $s0 com o endereço de A
+    move $s0, $a0
     # Inicializando o índice i com 1
-    addi $t1, $t1, 1
-    
+    li $t1, 1
+
 for_i_loop:
     # Se i >= tamanho, sair do loop
-    bge $t1, $t0, end
+    bge $t1, $a1, end
 
     # Carregando o endereço de A[i] (eleito)
-    lw $t5, A_addr
     sll $t7, $t1, 2   # Multiplicando $t1 por 4 (tamanho de um elemento)
-    add $t5, $t5, $t7 # $t5 contém o endereço de A[i]
+    add $t5, $s0, $t7 # $t5 contém o endereço de A[i]
 
     # Carregando A[i] (eleito) na variável $t2
     lw $t2, ($t5)
 
     # Inicializando j com i-1
     sub $t3, $t1, 1
-    
+
 while_loop:
     # Se j < 0 ou A[j] <= eleito, sair do loop
-    # verificar um equivalente
-    
-    
-    
-    
-    slt $t8, $t3, $zero   # $t1 = 1 se $t0 < 0, senão $t1 = 0
+    slt $t8, $t3, $zero   # $t8 = 1 se $t3 < 0, senão $t8 = 0
 
-    # Branch condicional se $t1 for igual a 0 (j >= 0)
+    # Branch condicional se $t8 for igual a 0 (j >= 0)
     beq $t8, $zero, se_j_maior_ou_igual_0
 
     # Código a ser executado se j < 0
@@ -47,12 +59,11 @@ while_loop:
 se_j_maior_ou_igual_0:
     
     # Carregando o endereço de A[j]
-    lw $t6, A_addr
     sll $t8, $t3, 2   # Multiplicando $t3 por 4 (tamanho de um elemento)
-    add $t6, $t6, $t8 # $t6 contém o endereço de A[j]
+    add $t6, $s0, $t8 # $t6 contém o endereço de A[j]
 
     # Carregando A[j] na variável $t4
-    lw $t4, 0($t6)
+    lw $t4, ($t6)
 
     # Comparando eleito com A[j]
     bge $t2, $t4, end_while
@@ -80,6 +91,8 @@ end_while:
     j for_i_loop
 
 end:
-    # Fim do programa
-    li $v0, 10
-    syscall
+    # Restaurando registradores
+    lw $s0, 0($sp)
+    lw $ra, 4($sp)
+    jr $ra
+exit:
