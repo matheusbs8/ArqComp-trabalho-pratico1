@@ -6,8 +6,8 @@ tamanho: .word 10  # Variável tamanho para armazenar o tamanho do array
 .globl main
 
 main:
-  # Carregando o tamanho do array na variável $t0
-  lw $t0, tamanho
+  # Carregando o tamanho do array na variável $a1
+  lw $a1, tamanho
   la $a0, A
 
   # Chama a função de ordenação por seleção
@@ -51,8 +51,8 @@ skip_swap:
   # Incrementa $t8 para comparar com o próximo elemento
   addi $t8, $t8, 1
 
-  # Verifica se o índice atual ($t8) é menor que o tamanho do array ($t0)
-  blt $t8, $t0, for_j_loop  # Se j < tam, continue o loop interno
+  # Verifica se o índice atual ($t8) é menor que o tamanho do array ($a1)
+  blt $t8, $a1, for_j_loop  # Se j < tam, continue o loop interno
 
   # Swap: Troca A[i] com o menor elemento A[indiceMenor]
   sll $t7, $t2, 2   # Multiplicando $t2 por 4 (tamanho de um elemento)
@@ -70,8 +70,8 @@ skip_swap:
   # Incrementa o índice atual ($t2)
   addi $t2, $t2, 1
 
-  # Verifica se o índice atual ($t2) é menor que o tamanho do array ($t0)
-  blt $t2, $t0, for_i_loop  # Se $t2 < $t0, continue o loop externo
+  # Verifica se o índice atual ($t2) é menor que o tamanho do array ($a1)
+  blt $t2, $a1, for_i_loop  # Se $t2 < $a1, continue o loop externo
 
   # Fim da função de ordenação por seleção
   jr $ra
