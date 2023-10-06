@@ -3,7 +3,7 @@ A: .word 3, 2, 7, 8, 1, 9, 10, 4, 7
 tamanho: .word 9
 
 .text
-
+main:
     # Inicializa $a0 com o endereço de A
     la $a0, A
 
