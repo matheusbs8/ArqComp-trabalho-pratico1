@@ -16,6 +16,7 @@ main:
     # Saída do programa
     j exit
 
+
 # Função InsertionSort
 InsertionSort:
     # Argumentos: $a0 = endereço do array A, $a1 = tamanho do array
@@ -86,7 +87,7 @@ end_while:
     j for_i_loop
 
 end:
-    # Restaurando registradores
+    # saindo da função
     
     jr $ra
 exit:
