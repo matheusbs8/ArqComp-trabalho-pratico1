@@ -19,15 +19,10 @@ tamanho: .word 9
 # Função InsertionSort
 InsertionSort:
     # Argumentos: $a0 = endereço do array A, $a1 = tamanho do array
-    #move $s0, $a0       # endereço do array A
-    #move $s1, $a1       # tamanho do array
+    move $s0, $a0       # endereço do array A
+    move $s1, $a1       # tamanho do array
  
- # Salvando registradores necessários
-    sw $s0, 0($sp)
-    sw $ra, 4($sp)
 
-    # Inicializando $s0 com o endereço de A
-    move $s0, $a0
     # Inicializando o índice i com 1
     li $t1, 1
 
@@ -36,8 +31,8 @@ for_i_loop:
     bge $t1, $a1, end
 
     # Carregando o endereço de A[i] (eleito)
-    sll $t7, $t1, 2   # Multiplicando $t1 por 4 (tamanho de um elemento)
-    add $t5, $s0, $t7 # $t5 contém o endereço de A[i]
+    sll $t6, $t1, 2   # Multiplicando $t1 por 4 (tamanho de um elemento)
+    add $t5, $s0, $t6 # $t5 contém o endereço de A[i]
 
     # Carregando A[i] (eleito) na variável $t2
     lw $t2, ($t5)
@@ -47,10 +42,10 @@ for_i_loop:
 
 while_loop:
     # Se j < 0 ou A[j] <= eleito, sair do loop
-    slt $t8, $t3, $zero   # $t8 = 1 se $t3 < 0, senão $t8 = 0
+    slt $t6, $t3, $zero   # $t8 = 1 se $t3 < 0, senão $t8 = 0
 
     # Branch condicional se $t8 for igual a 0 (j >= 0)
-    beq $t8, $zero, se_j_maior_ou_igual_0
+    beq $t6, $zero, se_j_maior_ou_igual_0
 
     # Código a ser executado se j < 0
     j end_while
@@ -59,8 +54,8 @@ while_loop:
 se_j_maior_ou_igual_0:
     
     # Carregando o endereço de A[j]
-    sll $t8, $t3, 2   # Multiplicando $t3 por 4 (tamanho de um elemento)
-    add $t6, $s0, $t8 # $t6 contém o endereço de A[j]
+    sll $t7, $t3, 2   # Multiplicando $t3 por 4 (tamanho de um elemento)
+    add $t6, $s0, $t7 # $t6 contém o endereço de A[j]
 
     # Carregando A[j] na variável $t4
     lw $t4, ($t6)
@@ -92,7 +87,6 @@ end_while:
 
 end:
     # Restaurando registradores
-    lw $s0, 0($sp)
-    lw $ra, 4($sp)
+    
     jr $ra
 exit:
